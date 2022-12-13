@@ -39,13 +39,16 @@ it("works when you click on the left arrow", function() {
   expect(queryByAltText("Photo by Richard Pasquarella on Unsplash")).toBeInTheDocument();
   expect(queryByAltText("Photo by Pratik Patel on Unsplash")).not.toBeInTheDocument();
 
-  // test move backward in the carousel
-
   //move to the second image
   const rightArrow = queryByTestId("right-arrow");
   fireEvent.click(rightArrow);
 
+  //check if it is on the second page
+  //if I have this line here, it seems the page get refreshed and go back to the first image?
+  expect(queryByAltText("Photo by Pratik Patel on Unsplash")).toBeInTheDocument();
+
   // move back to the first image
+  //this line seems to need to be included right before firing left arrow click.
   const leftArrow = queryByTestId("left-arrow");
   fireEvent.click(leftArrow);
 
