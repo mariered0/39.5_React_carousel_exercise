@@ -13,6 +13,7 @@ it('matches snapshot', () => {
   expect(asFragment()).toMatchSnapshot();
 });
 
+
 it("works when you click on the right arrow", function() {
   const { queryByTestId, queryByAltText } = render(<Carousel />);
 
@@ -38,11 +39,26 @@ it("works when you click on the left arrow", function() {
   expect(queryByAltText("Photo by Richard Pasquarella on Unsplash")).toBeInTheDocument();
   expect(queryByAltText("Photo by Pratik Patel on Unsplash")).not.toBeInTheDocument();
 
-  // move backward in the carousel
+  // test move backward in the carousel
+
+  //move to the second image
+  const rightArrow = queryByTestId("right-arrow");
+  fireEvent.click(rightArrow);
+
+  // move back to the first image
   const leftArrow = queryByTestId("left-arrow");
   fireEvent.click(leftArrow);
 
-  // expect the third image to show, but not the second
-  expect(queryByAltText("Photo by Pratik Patel on Unsplash")).not.toBeInTheDocument();
-  expect(queryByAltText("Photo by Josh Post on Unsplash")).toBeInTheDocument();
+  // expect the first image to show, but not the third (check to make sure it's not going forward)
+  expect(queryByAltText("Photo by Josh Post on Unsplash")).not.toBeInTheDocument();
+  expect(queryByAltText("Photo by Richard Pasquarella on Unsplash")).toBeInTheDocument();
+})
+
+
+//left arrow should be missing when on the first image
+it("works when you're on the first image and there's no left arrow", function() {
+  const { queryByTestId, queryByAltText } = render(<Carousel />);
+  const leftArrow = queryByTestId("left-arrow");
+  expect(queryByAltText("Photo by Richard Pasquarella on Unsplash")).toBeInTheDocument();
+  expect(leftArrow).not.toBeInTheDocument();
 })
